@@ -12,6 +12,7 @@ jobs:
         with:
           command: |
             cd /home/ubuntu/Reddit-Space_Launches/
+            git config --global --add safe.directory /home/ubuntu/Reddit-Space_Launches
             git pull origin main
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
