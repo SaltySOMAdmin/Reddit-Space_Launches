@@ -23,7 +23,7 @@ reddit = praw.Reddit(
 
 subreddit_name = 'UFOs_Archive'
 LAUNCH_API_URL = "https://ll.thespacedevs.com/2.2.0/launch/upcoming/"
-LOOKAHEAD_HOURS = 120
+LOOKAHEAD_HOURS = 24
 
 def get_launches_within_24_hours():
     try:
