@@ -77,7 +77,18 @@ def post_to_reddit(launches):
 
         body = build_post_body(launches)
         submission = reddit.subreddit(subreddit_name).submit(title, selftext=body)
-        submission.mod.sticky()
+        try:
+            submission.mod.sticky()
+        except Exception as e:
+            logging.error("Could not sticky post — possibly due to full sticky slots: %s", str(e))
+            
+            # Optional: comment on the post to notify mods/users
+            try:
+                submission.reply(
+                    "This launch alert could not be stickied — likely because both sticky slots are already in use. "
+                )
+            except Exception as comment_error:
+                logging.error("Failed to comment fallback sticky note: %s", str(comment_error))        
         with open('/home/ubuntu/Reddit-Space_Launches/stickied_log.txt', 'a') as f:
             f.write(f"{submission.id}\n")
         print("Posted and stickied:", title)
