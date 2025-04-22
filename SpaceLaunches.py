@@ -78,6 +78,8 @@ def post_to_reddit(launches):
         body = build_post_body(launches)
         submission = reddit.subreddit(subreddit_name).submit(title, selftext=body)
         submission.mod.sticky()
+        with open('/home/ubuntu/Reddit-Space_Launches/stickied_log.txt', 'a') as f:
+            f.write(f"{submission.id}\n")
         print("Posted and stickied:", title)
     except Exception as e:
         logging.error("Failed to post to Reddit: %s", str(e))
