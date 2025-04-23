@@ -24,6 +24,7 @@ reddit = praw.Reddit(
 subreddit_name = 'UFOs_Archive'
 LAUNCH_API_URL = "https://ll.thespacedevs.com/2.2.0/launch/upcoming/"
 LOOKAHEAD_HOURS = 24
+FLAIR_ID = 'aa9bb36e-203f-11f0-9c87-1ada177873d9'  # Space Launch
 
 def get_launches_within_24_hours():
     try:
@@ -87,7 +88,12 @@ def post_to_reddit(launches):
         title = f"🚀 Upcoming Launches for {today_eastern}"
 
         body = build_post_body(launches)
-        submission = reddit.subreddit(subreddit_name).submit(title, selftext=body)
+        subreddit = reddit.subreddit(subreddit_name)
+        submission = subreddit.submit(title, selftext=body)
+
+        # Apply flair using known ID
+        submission.flair.select(FLAIR_ID)
+
         try:
             submission.mod.sticky()
         except Exception as e:
@@ -97,7 +103,8 @@ def post_to_reddit(launches):
                     "This launch alert could not be stickied — likely because both sticky slots are already in use. "
                 )
             except Exception as comment_error:
-                logging.error("Failed to comment fallback sticky note: %s", str(comment_error))        
+                logging.error("Failed to comment fallback sticky note: %s", str(comment_error))
+
         with open('/home/ubuntu/Reddit-Space_Launches/stickied_log.txt', 'a') as f:
             f.write(f"{submission.id}\n")
         print("Posted and stickied:", title)
