@@ -45,11 +45,22 @@ def get_launches_within_24_hours():
         logging.error("Failed to get launch data: %s", str(e))
         return []
 
+def format_launch_time(utc_time_str):
+    try:
+        utc_dt = datetime.fromisoformat(utc_time_str.replace('Z', '+00:00'))
+        eastern = pytz.timezone('US/Eastern')
+        est_dt = utc_dt.astimezone(eastern)
+        return f"{utc_dt.strftime('%Y-%m-%d %H:%M')} UTC / {est_dt.strftime('%I:%M %p %Z')}"
+    except Exception as e:
+        logging.error("Failed to format launch time: %s", str(e))
+        return utc_time_str  # fallback
+
 def build_post_body(launches):
     body = "Here are the launches scheduled in the next 24 hours:\n\n"
     for launch in launches:
         name = launch.get('name', 'Unknown')
         time = launch.get('net', 'Unknown')
+        formatted_time = format_launch_time(time)
         provider = launch.get('launch_service_provider', {}).get('name', 'Unknown')
         mission = launch.get('mission', {}).get('name') if launch.get('mission') else 'N/A'
         vid_url = launch.get('vidURLs', ['Not available'])[0]
@@ -59,7 +70,7 @@ def build_post_body(launches):
         body += f"🚀 **{name}**\n"
         body += f"**Provider**: {provider}\n"
         body += f"**Mission**: {mission}\n"
-        body += f"**Launch Time (UTC)**: {time}\n"
+        body += f"**Launch Time**: {formatted_time}\n"
         body += f"**Webcast**: {vid_url}\n"
         body += f"[More Info]({info_url})\n\n"
         
@@ -81,8 +92,6 @@ def post_to_reddit(launches):
             submission.mod.sticky()
         except Exception as e:
             logging.error("Could not sticky post — possibly due to full sticky slots: %s", str(e))
-            
-            # Optional: comment on the post to notify mods/users
             try:
                 submission.reply(
                     "This launch alert could not be stickied — likely because both sticky slots are already in use. "
