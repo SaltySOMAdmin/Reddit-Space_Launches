@@ -33,7 +33,8 @@ def clean_text(text):
         return ''
     text = unicodedata.normalize('NFKC', str(text))
     text = re.sub(r'[\u200B-\u200D\uFEFF\u2060-\u206F\x00-\x1F\x7F]', '', text)
-    return re.sub(r'([\\`*_{}\[\]()#+\-!])', r'\\\1', text)
+    return re.sub(r'([\\`*_{}\[\]()#+!])', r'\\\1', text)  # Removed the \- from this line
+
 
 def get_launches_within_24_hours():
     try:
