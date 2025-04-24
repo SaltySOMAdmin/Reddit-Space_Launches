@@ -66,7 +66,7 @@ def format_launch_time(utc_time_str):
         return utc_time_str  # fallback
 
 def build_post_body(launches):
-    body = "🚀 Here are the space launches scheduled for the next 24 hours:\n\n"
+    body = "Here are the launches scheduled for the next 24 hours:\n\n"
     for launch in launches:
         name = clean_text(launch.get('name', 'Unknown'))
         time = launch.get('net', 'Unknown')
@@ -94,7 +94,7 @@ def post_to_reddit(launches):
 
         eastern = pytz.timezone('US/Eastern')
         today_eastern = datetime.now(eastern).strftime("%B %d, %Y")
-        title = f"Upcoming Launches for {today_eastern}"
+        title = f"🚀 Upcoming Rocket Launches for {today_eastern}"
 
         body = build_post_body(launches)
         subreddit = reddit.subreddit(subreddit_name)
