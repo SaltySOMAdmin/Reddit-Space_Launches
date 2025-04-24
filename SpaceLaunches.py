@@ -79,10 +79,10 @@ def build_post_body(launches):
 
         body += f"---\n\n"
         body += f"🚀 **{name}**\n"
-        body += f"**Provider **: {provider}\n"
-        body += f"**Mission **: {mission}\n"
-        body += f"**Launch Time **: {formatted_time}\n"
-        body += f"**Webcast **: {vid_url}\n"
+        body += f"**Provider:** {provider}\n"
+        body += f"**Mission:** {mission}\n"
+        body += f"**Launch Time:** {formatted_time}\n"
+        body += f"**Webcast:** {vid_url}\n"
         body += f"[More Info]({info_url})\n\n"
 
     return body
