@@ -91,7 +91,7 @@ def post_to_reddit(launches):
         subreddit = reddit.subreddit(subreddit_name)
         submission = subreddit.submit(title, selftext=body)
 
-        # Apply flair using known ID
+        # Apply flair using Space Launch Flair ID
         submission.flair.select(FLAIR_ID)
 
         # Check how many stickied posts are currently active
@@ -102,7 +102,7 @@ def post_to_reddit(launches):
             except Exception as e:
                 logging.error("Attempted to sticky but failed: %s", str(e))
         else:
-            logging.warning("Sticky slots full. Post not stickied.")
+            print("Sticky slots full. Post not stickied.")
             try:
                 submission.reply(
                     "This launch alert could not be stickied — both sticky slots are currently in use. "
