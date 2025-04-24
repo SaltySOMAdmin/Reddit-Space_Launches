@@ -85,7 +85,7 @@ def post_to_reddit(launches):
 
         eastern = pytz.timezone('US/Eastern')
         today_eastern = datetime.now(eastern).strftime("%B %d, %Y")
-        title = f"🚀 Upcoming Launches for {today_eastern}"
+        title = f"Upcoming Launches for {today_eastern}"
 
         body = build_post_body(launches)
         subreddit = reddit.subreddit(subreddit_name)
@@ -94,22 +94,30 @@ def post_to_reddit(launches):
         # Apply flair using known ID
         submission.flair.select(FLAIR_ID)
 
-        try:
-            submission.mod.sticky()
-        except Exception as e:
-            logging.error("Could not sticky post — possibly due to full sticky slots: %s", str(e))
+        # Check how many stickied posts are currently active
+        stickied_posts = [post for post in subreddit.hot(limit=10) if post.stickied]
+        if len(stickied_posts) < 2:
+            try:
+                submission.mod.sticky()
+            except Exception as e:
+                logging.error("Attempted to sticky but failed: %s", str(e))
+        else:
+            logging.warning("Sticky slots full. Post not stickied.")
             try:
                 submission.reply(
-                    "This launch alert could not be stickied — likely because both sticky slots are already in use. "
+                    "This launch alert could not be stickied — both sticky slots are currently in use. "
                 )
             except Exception as comment_error:
                 logging.error("Failed to comment fallback sticky note: %s", str(comment_error))
 
+        # Log post ID to stickied log (even if it wasn’t stickied)
         with open('/home/ubuntu/Reddit-Space_Launches/stickied_log.txt', 'a') as f:
             f.write(f"{submission.id}\n")
-        print("Posted and stickied:", title)
+
+        print("Posted:", title)
     except Exception as e:
         logging.error("Failed to post to Reddit: %s", str(e))
+
 
 def main():
     launches = get_launches_within_24_hours()
