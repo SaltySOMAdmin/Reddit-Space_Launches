@@ -5,6 +5,7 @@ import logging
 from datetime import datetime, timedelta, timezone
 import pytz
 import re
+import unicodedata
 
 # Set up logging
 logging.basicConfig(
@@ -27,6 +28,13 @@ LAUNCH_API_URL = "https://ll.thespacedevs.com/2.2.0/launch/upcoming/"
 LOOKAHEAD_HOURS = 24
 FLAIR_ID = 'aa9bb36e-203f-11f0-9c87-1ada177873d9'  # Space Launch
 
+def clean_text(text):
+    if not text:
+        return ''
+    text = unicodedata.normalize('NFKC', str(text))
+    text = re.sub(r'[\u200B-\u200D\uFEFF\u2060-\u206F\x00-\x1F\x7F]', '', text)
+    return re.sub(r'([\\`*_{}\[\]()#+\-!])', r'\\\1', text)
+
 def get_launches_within_24_hours():
     try:
         response = requests.get(LAUNCH_API_URL)
@@ -34,7 +42,7 @@ def get_launches_within_24_hours():
         launches = response.json().get("results", [])
         now_utc = datetime.now(timezone.utc)
         cutoff = now_utc + timedelta(hours=LOOKAHEAD_HOURS)
-        
+
         upcoming = []
         for launch in launches:
             net_str = launch.get("net")
@@ -57,20 +65,15 @@ def format_launch_time(utc_time_str):
         logging.error("Failed to format launch time: %s", str(e))
         return utc_time_str  # fallback
 
-def escape_markdown(text):
-    if not text:
-        return ''
-    return re.sub(r'([\\`*_{}\[\]()#+\-!])', r'\\\1', str(text))
-
 def build_post_body(launches):
     body = "🚀 Here are the space launches scheduled for the next 24 hours:\n\n"
     for launch in launches:
-        name = escape_markdown(launch.get('name', 'Unknown'))
+        name = clean_text(launch.get('name', 'Unknown'))
         time = launch.get('net', 'Unknown')
-        formatted_time = escape_markdown(format_launch_time(time))
-        provider = escape_markdown(launch.get('launch_service_provider', {}).get('name', 'Unknown'))
-        mission = escape_markdown(launch.get('mission', {}).get('name') if launch.get('mission') else 'N/A')
-        vid_url = escape_markdown(launch.get('vidURLs', ['Not available'])[0])
+        formatted_time = clean_text(format_launch_time(time))
+        provider = clean_text(launch.get('launch_service_provider', {}).get('name', 'Unknown'))
+        mission = clean_text(launch.get('mission', {}).get('name') if launch.get('mission') else 'N/A')
+        vid_url = clean_text(launch.get('vidURLs', ['Not available'])[0])
         info_url = launch.get('url', '')
 
         body += f"---\n\n"
@@ -97,10 +100,8 @@ def post_to_reddit(launches):
         subreddit = reddit.subreddit(subreddit_name)
         submission = subreddit.submit(title, selftext=body)
 
-        # Apply flair using Space Launch Flair ID
         submission.flair.select(FLAIR_ID)
 
-        # Check how many stickied posts are currently active
         stickied_posts = [post for post in subreddit.hot(limit=10) if post.stickied]
         if len(stickied_posts) < 2:
             try:
@@ -110,20 +111,23 @@ def post_to_reddit(launches):
         else:
             print("Sticky slots full. Post not stickied.", today_eastern)
             try:
-                submission.reply(
-                    "This launch alert could not be stickied — both sticky slots are currently in use. "
+                already_replied = any(
+                    "launch alert could not be stickied" in c.body.lower()
+                    for c in submission.comments
                 )
+                if not already_replied:
+                    submission.reply(
+                        "This launch alert could not be stickied — both sticky slots are currently in use."
+                    )
             except Exception as comment_error:
                 logging.error("Failed to comment fallback sticky note: %s", str(comment_error))
 
-        # Log post ID to stickied log (even if it wasn’t stickied)
         with open('/home/ubuntu/Reddit-Space_Launches/stickied_log.txt', 'a') as f:
             f.write(f"{submission.id}\n")
 
         print("Posted:", title)
     except Exception as e:
         logging.error("Failed to post to Reddit: %s", str(e))
-
 
 def main():
     launches = get_launches_within_24_hours()
