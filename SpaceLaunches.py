@@ -57,7 +57,7 @@ def format_launch_time(utc_time_str):
         return utc_time_str  # fallback
 
 def build_post_body(launches):
-    body = "Here are the launches scheduled in the next 24 hours:\n\n"
+    body = "🚀 Here are the space launches scheduled for the next 24 hours:\n\n"
     for launch in launches:
         name = launch.get('name', 'Unknown')
         time = launch.get('net', 'Unknown')
