@@ -4,6 +4,7 @@ import config  # Your config file with credentials
 import logging
 from datetime import datetime, timedelta, timezone
 import pytz
+import re
 
 # Set up logging
 logging.basicConfig(
@@ -56,17 +57,22 @@ def format_launch_time(utc_time_str):
         logging.error("Failed to format launch time: %s", str(e))
         return utc_time_str  # fallback
 
+def escape_markdown(text):
+    if not text:
+        return ''
+    return re.sub(r'([\\`*_{}\[\]()#+\-!])', r'\\\1', str(text))
+
 def build_post_body(launches):
     body = "🚀 Here are the space launches scheduled for the next 24 hours:\n\n"
     for launch in launches:
-        name = launch.get('name', 'Unknown')
+        name = escape_markdown(launch.get('name', 'Unknown'))
         time = launch.get('net', 'Unknown')
-        formatted_time = format_launch_time(time)
-        provider = launch.get('launch_service_provider', {}).get('name', 'Unknown')
-        mission = launch.get('mission', {}).get('name') if launch.get('mission') else 'N/A'
-        vid_url = launch.get('vidURLs', ['Not available'])[0]
+        formatted_time = escape_markdown(format_launch_time(time))
+        provider = escape_markdown(launch.get('launch_service_provider', {}).get('name', 'Unknown'))
+        mission = escape_markdown(launch.get('mission', {}).get('name') if launch.get('mission') else 'N/A')
+        vid_url = escape_markdown(launch.get('vidURLs', ['Not available'])[0])
         info_url = launch.get('url', '')
-        
+
         body += f"---\n\n"
         body += f"🚀 **{name}**\n"
         body += f"**Provider**: {provider}\n"
@@ -74,7 +80,7 @@ def build_post_body(launches):
         body += f"**Launch Time**: {formatted_time}\n"
         body += f"**Webcast**: {vid_url}\n"
         body += f"[More Info]({info_url})\n\n"
-        
+
     return body
 
 def post_to_reddit(launches):
