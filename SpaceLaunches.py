@@ -102,7 +102,7 @@ def post_to_reddit(launches):
             except Exception as e:
                 logging.error("Attempted to sticky but failed: %s", str(e))
         else:
-            print("Sticky slots full. Post not stickied. {today_eastern}")
+            print("Sticky slots full. Post not stickied.", today_eastern)
             try:
                 submission.reply(
                     "This launch alert could not be stickied — both sticky slots are currently in use. "
