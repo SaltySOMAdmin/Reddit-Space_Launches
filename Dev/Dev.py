@@ -3,9 +3,9 @@ import praw
 import config  # Your config file with credentials
 import logging
 from datetime import datetime, timedelta, timezone
-import pytz
 import re
 import unicodedata
+from zoneinfo import ZoneInfo
 
 # Set up logging
 logging.basicConfig(
@@ -59,7 +59,7 @@ def get_launches_within_24_hours():
 def format_launch_time(utc_time_str):
     try:
         utc_dt = datetime.fromisoformat(utc_time_str.replace('Z', '+00:00'))
-        eastern = pytz.timezone('US/Eastern')
+        eastern = ZoneInfo("America/New_York")
         est_dt = utc_dt.astimezone(eastern)
         return f"{utc_dt.strftime('%Y-%m-%d %H:%M')} UTC / {est_dt.strftime('%I:%M %p %Z')}"
     except Exception as e:
