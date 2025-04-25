@@ -95,7 +95,7 @@ def post_to_reddit(launches):
             print("No launches to post.")
             return
 
-        eastern = pytz.timezone('US/Eastern')
+        eastern = ZoneInfo("America/New_York")
         today_eastern = datetime.now(eastern).strftime("%B %d, %Y")
         title = f"🚀 Upcoming Rocket Launches for {today_eastern}"
 
