@@ -9,7 +9,7 @@ import unicodedata
 
 # Set up logging
 logging.basicConfig(
-    filename='/home/ubuntu/Reddit-Space_Launches/error_log.txt',
+    filename='/home/ubuntu/Reddit-Space_Launches/Dev/dev_error_log.txt',
     level=logging.ERROR,
     format='%(asctime)s %(levelname)s: %(message)s'
 )
@@ -125,7 +125,7 @@ def post_to_reddit(launches):
             except Exception as comment_error:
                 logging.error("Failed to comment fallback sticky note: %s", str(comment_error))
 
-        with open('/home/ubuntu/Reddit-Space_Launches/stickied_log.txt', 'a') as f:
+        with open('/home/ubuntu/Reddit-Space_Launches/Dev/dev_stickied_log.txt', 'a') as f:
             f.write(f"{submission.id}\n")
 
         print("Posted:", title)
