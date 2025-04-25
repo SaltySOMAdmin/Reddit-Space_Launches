@@ -3,9 +3,9 @@ import praw
 import config  # Your config file with credentials
 import logging
 from datetime import datetime, timedelta, timezone
-import pytz
 import re
 import unicodedata
+from zoneinfo import ZoneInfo
 
 # Set up logging
 logging.basicConfig(
@@ -59,7 +59,7 @@ def get_launches_within_24_hours():
 def format_launch_time(utc_time_str):
     try:
         utc_dt = datetime.fromisoformat(utc_time_str.replace('Z', '+00:00'))
-        eastern = pytz.timezone('US/Eastern')
+        eastern = ZoneInfo("America/New_York")
         est_dt = utc_dt.astimezone(eastern)
         return f"{utc_dt.strftime('%Y-%m-%d %H:%M')} UTC / {est_dt.strftime('%I:%M %p %Z')}"
     except Exception as e:
@@ -67,7 +67,7 @@ def format_launch_time(utc_time_str):
         return utc_time_str  # fallback
 
 def build_post_body(launches):
-    body = "Here are the launches scheduled for the next 24 hours:\n\n"
+    body = "**Here are the launches scheduled for the next 24 hours:**\n\n"
     for launch in launches:
         name = clean_text(launch.get('name', 'Unknown'))
         time = launch.get('net', 'Unknown')
@@ -78,13 +78,16 @@ def build_post_body(launches):
         info_url = launch.get('url', '')
 
         body += f"---\n\n"
-        body += f"🚀 **{name}**\n"
+        body += f"- **{name}**\n"
         body += f"**Provider:** {provider}\n"
         body += f"**Mission:** {mission}\n"
         body += f"**Launch Time:** {formatted_time}\n"
         body += f"**Webcast:** {vid_url}\n"
         body += f"[More Info]({info_url})\n\n"
 
+    body += f"---\n\n\n"
+    body += f"**Visit [RocketLaunch.Live](https://www.rocketlaunch.live) to view the full schedule for future planned launches.**\n\n"
+    body += f"**For more information about how to identify space launches and their effects, check out our [Space Launches Wiki Page.](https://www.ufos.wiki/investigation/space-launches/)**\n"
     return body
 
 def post_to_reddit(launches):
@@ -93,7 +96,7 @@ def post_to_reddit(launches):
             print("No launches to post.")
             return
 
-        eastern = pytz.timezone('US/Eastern')
+        eastern = ZoneInfo("America/New_York")
         today_eastern = datetime.now(eastern).strftime("%B %d, %Y")
         title = f"🚀 Upcoming Rocket Launches for {today_eastern}"
 
