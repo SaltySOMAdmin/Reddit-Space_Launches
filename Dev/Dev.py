@@ -87,8 +87,8 @@ def build_post_body(launches):
 
     body += f"---\n"
     body += f"&nbsp;"
-    body += f"**Visit RocketLaunch.Live to view the full schedule for future planned launches.**\n\n"
-    body += f"**For more information about how to identify space launches and their effects, check out our [Space Launches Wiki Page.](https://www.ufos.wiki/investigation/space-launches/)**\n"
+    body += f"- **Visit RocketLaunch.Live to view the full schedule for future planned launches.**\n\n"
+    body += f"- **For more information about how to identify space launches and their effects, check out our [Space Launches Wiki Page.](https://www.ufos.wiki/investigation/space-launches/)**\n"
     return body
 
 def post_to_reddit(launches):
