@@ -88,7 +88,7 @@ def build_post_body(launches):
     body += f"---\n\n\n"
     body += f"**Visit [RocketLaunch.Live](https://www.rocketlaunch.live) to view the full schedule for future planned launches.**\n\n"
     body += f"**For more information about how to identify space launches and their effects, check out our [Space Launches Wiki Page.](https://www.ufos.wiki/investigation/space-launches/)**\n\n"
-    body += f"[Launch Example Image 1](https://www.ufos.wiki/wp-content/uploads/2023/01/mf5emwi.png)- [Launch Example Image 2](https://www.ufos.wiki/wp-content/uploads/2023/01/Space-Launch.png)\n"
+    body += f"[Launch Example Image 1](https://www.ufos.wiki/wp-content/uploads/2023/01/mf5emwi.png) **-** [Launch Example Image 2](https://www.ufos.wiki/wp-content/uploads/2023/01/Space-Launch.png)\n"
     return body
 
 def post_to_reddit(launches):
