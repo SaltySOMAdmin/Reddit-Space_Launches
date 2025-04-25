@@ -67,7 +67,7 @@ def format_launch_time(utc_time_str):
         return utc_time_str  # fallback
 
 def build_post_body(launches):
-    body = "#**Here are the launches scheduled for the next 24 hours:\n\n**"
+    body = "## Here are the launches scheduled for the next 24 hours:\n\n"
     for launch in launches:
         name = clean_text(launch.get('name', 'Unknown'))
         time = launch.get('net', 'Unknown')
@@ -85,8 +85,7 @@ def build_post_body(launches):
         body += f"**Webcast:** {vid_url}\n"
         body += f"[More Info]({info_url})\n\n"
 
-    body += f"---\n"
-    body += f"&nbsp;"
+    body += f"---\n\n\n"
     body += f"- **Visit RocketLaunch.Live to view the full schedule for future planned launches.**\n\n"
     body += f"- **For more information about how to identify space launches and their effects, check out our [Space Launches Wiki Page.](https://www.ufos.wiki/investigation/space-launches/)**\n"
     return body
