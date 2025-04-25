@@ -25,7 +25,7 @@ reddit = praw.Reddit(
 
 subreddit_name = 'SaltyDevSub'
 LAUNCH_API_URL = "https://ll.thespacedevs.com/2.2.0/launch/upcoming/"
-LOOKAHEAD_HOURS = 24
+LOOKAHEAD_HOURS = 36
 FLAIR_ID = 'aa9bb36e-203f-11f0-9c87-1ada177873d9'  # Space Launch
 
 def clean_text(text):
