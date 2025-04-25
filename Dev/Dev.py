@@ -78,7 +78,7 @@ def build_post_body(launches):
         info_url = launch.get('url', '')
 
         body += f"---\n\n"
-        body += f"🚀 **{name}**\n"
+        body += f"- **{name}**\n"
         body += f"**Provider:** {provider}\n"
         body += f"**Mission:** {mission}\n"
         body += f"**Launch Time:** {formatted_time}\n"
@@ -86,8 +86,8 @@ def build_post_body(launches):
         body += f"[More Info]({info_url})\n\n"
 
     body += f"---\n\n\n"
-    body += f"- **Visit RocketLaunch.Live to view the full schedule for future planned launches.**\n\n"
-    body += f"- **For more information about how to identify space launches and their effects, check out our [Space Launches Wiki Page.](https://www.ufos.wiki/investigation/space-launches/)**\n"
+    body += f"**Visit [RocketLaunch.Live](https://www.rocketlaunch.live) to view the full schedule for future planned launches.**\n\n"
+    body += f"**For more information about how to identify space launches and their effects, check out our [Space Launches Wiki Page.](https://www.ufos.wiki/investigation/space-launches/)**\n"
     return body
 
 def post_to_reddit(launches):
