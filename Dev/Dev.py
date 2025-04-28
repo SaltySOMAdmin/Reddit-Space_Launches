@@ -9,7 +9,7 @@ from zoneinfo import ZoneInfo
 
 # Set up logging
 logging.basicConfig(
-    filename='/home/ubuntu/Reddit-Space_Launches/Dev/dev_error_log.txt',
+    filename='/home/ubuntu/Reddit-Space_Launches/error_log.txt',
     level=logging.ERROR,
     format='%(asctime)s %(levelname)s: %(message)s'
 )
@@ -23,10 +23,10 @@ reddit = praw.Reddit(
     user_agent=config.destination_user_agent
 )
 
-subreddit_name = 'SaltyDevSub'
+subreddit_name = 'UFOs_Archive'
 LAUNCH_API_URL = "https://ll.thespacedevs.com/2.2.0/launch/upcoming/"
-LOOKAHEAD_HOURS = 52
-FLAIR_ID = '5c41e440-21e8-11f0-be7c-02e6effa34d2'  # Space Launch
+LOOKAHEAD_HOURS = 24
+FLAIR_ID = 'aa9bb36e-203f-11f0-9c87-1ada177873d9'  # Space Launch
 
 def clean_text(text):
     if not text:
@@ -61,7 +61,8 @@ def format_launch_time(utc_time_str):
         utc_dt = datetime.fromisoformat(utc_time_str.replace('Z', '+00:00'))
         eastern = ZoneInfo("America/New_York")
         est_dt = utc_dt.astimezone(eastern)
-        return f"{utc_dt.strftime('%Y-%m-%d %H:%M')} UTC / {est_dt.strftime('%I:%M %p %Z')}"
+        formatted_time = f"{utc_dt.strftime('%Y-%m-%d %H:%M')} UTC / {est_dt.strftime('%I:%M %p %Z')} ({est_dt.strftime('%B %d')})"
+        return formatted_time
     except Exception as e:
         logging.error("Failed to format launch time: %s", str(e))
         return utc_time_str  # fallback
@@ -90,7 +91,7 @@ def build_post_body(launches):
     body += f"**For more information about how to identify space launches and their effects, check out our [Space Launches Wiki Page.](https://www.ufos.wiki/investigation/space-launches/)**\n\n"
     body += f"[Launch Example Image 1](https://www.ufos.wiki/wp-content/uploads/2023/01/mf5emwi.png) **-** [Launch Example Image 2](https://www.ufos.wiki/wp-content/uploads/2023/01/Space-Launch.png)\n"
     return body
-
+    
 def post_to_reddit(launches):
     try:
         if not launches:
@@ -127,7 +128,7 @@ def post_to_reddit(launches):
             except Exception as comment_error:
                 logging.error("Failed to comment fallback sticky note: %s", str(comment_error))
 
-        with open('/home/ubuntu/Reddit-Space_Launches/Dev/dev_stickied_log.txt', 'a') as f:
+        with open('/home/ubuntu/Reddit-Space_Launches/stickied_log.txt', 'a') as f:
             f.write(f"{submission.id}\n")
 
         print("Posted:", title)
