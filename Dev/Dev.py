@@ -9,7 +9,7 @@ from zoneinfo import ZoneInfo
 
 # Set up logging
 logging.basicConfig(
-    filename='/home/ubuntu/Reddit-Space_Launches/error_log.txt',
+    filename='/home/ubuntu/Reddit-Space_Launches/Dev/dev_error_log.txt',
     level=logging.ERROR,
     format='%(asctime)s %(levelname)s: %(message)s'
 )
@@ -23,10 +23,10 @@ reddit = praw.Reddit(
     user_agent=config.destination_user_agent
 )
 
-subreddit_name = 'UFOs_Archive'
+subreddit_name = 'SaltyDevSub'
 LAUNCH_API_URL = "https://ll.thespacedevs.com/2.2.0/launch/upcoming/"
-LOOKAHEAD_HOURS = 24
-FLAIR_ID = 'aa9bb36e-203f-11f0-9c87-1ada177873d9'  # Space Launch
+LOOKAHEAD_HOURS = 52
+FLAIR_ID = '5c41e440-21e8-11f0-be7c-02e6effa34d2'  # Space Launch
 
 def clean_text(text):
     if not text:
