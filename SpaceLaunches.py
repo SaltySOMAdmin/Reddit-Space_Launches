@@ -61,7 +61,7 @@ def format_launch_time(utc_time_str):
         utc_dt = datetime.fromisoformat(utc_time_str.replace('Z', '+00:00'))
         eastern = ZoneInfo("America/New_York")
         est_dt = utc_dt.astimezone(eastern)
-        formatted_time = f"{utc_dt.strftime('%Y-%m-%d %H:%M')} UTC / {est_dt.strftime('%I:%M %p %Z')} ({est_dt.strftime('%B %d')})"
+        formatted_time = f"{utc_dt.strftime('%Y-%m-%d %H:%M')} UTC / {est_dt.strftime('%Y-%m-%d %I:%M %p %Z')}"
         return formatted_time
     except Exception as e:
         logging.error("Failed to format launch time: %s", str(e))
