@@ -81,7 +81,6 @@ def build_post_body(launches):
         body += f"---\n\n"
         body += f"**{name}**\n\n"
         body += f"- **Provider:** {provider}\n\n"
-        body += f"- **Mission:** {mission}\n\n"
         body += f"- **Launch Time:** {formatted_time}\n\n"
         body += f"- **Launch Pad:** {pad}\n\n"
         body += f"- **Pad Country:** {country}\n\n"
