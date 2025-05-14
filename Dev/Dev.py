@@ -75,7 +75,7 @@ def build_post_body(launches):
         formatted_time = clean_text(format_launch_time(time))
         provider = clean_text(launch.get('launch_service_provider', {}).get('name', 'Unknown'))
         mission = clean_text(launch.get('mission', {}).get('name') if launch.get('mission') else 'N/A')
-        country = clean_text(launch.get('pad', {}).get('location', {}).get('name'))
+        pad = clean_text(launch.get('pad', {}).get('location', {}).get('name'))
         country = clean_text(launch.get('pad', {}).get('location', {}).get('country_code'))
 
         body += f"---\n\n"
@@ -83,7 +83,8 @@ def build_post_body(launches):
         body += f"**Provider:** {provider}\n"
         body += f"**Mission:** {mission}\n"
         body += f"**Launch Time:** {formatted_time}\n"
-        body += f"**Launch Location:** {mission}\n"
+        body += f"**Launch Pad Location:** {pad}\n"
+        body += f"**Launch Pad Country:** {country}\n"
 
     body += f"---\n\n\n"
     body += f"**Visit [RocketLaunch.Live](https://www.rocketlaunch.live) to view the full schedule for future planned launches.**\n\n"
