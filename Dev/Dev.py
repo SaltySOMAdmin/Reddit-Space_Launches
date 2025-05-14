@@ -141,4 +141,4 @@ def main():
 if __name__ == "__main__":
     main()
 
-#source /home/ubuntu/Reddit-Space_Launches/bin/activate && python3 /home/ubuntu/Reddit-Space_Launches/Dev/dev.py
+# sudo /bin/bash -c "source /home/ubuntu/Reddit-Space_Launches/bin/activate && python3 /home/ubuntu/Reddit-Space_Launches/Dev/Dev.py"
