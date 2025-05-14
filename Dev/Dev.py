@@ -83,8 +83,8 @@ def build_post_body(launches):
         body += f"- **Provider:** {provider}\n\n"
         body += f"- **Mission:** {mission}\n\n"
         body += f"- **Launch Time:** {formatted_time}\n\n"
-        body += f"- **Launch Pad Location:** {pad}\n\n"
-        body += f"- **Launch Pad Country:** {country}\n\n"
+        body += f"- **Launch Pad:** {pad}\n\n"
+        body += f"- **Pad Country:** {country}\n\n"
 
     body += f"---\n\n\n"
     body += f"**Visit [RocketLaunch.Live](https://www.rocketlaunch.live) to view the full schedule for future planned launches.**\n\n"
