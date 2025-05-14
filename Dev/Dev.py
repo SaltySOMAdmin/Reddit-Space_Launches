@@ -100,7 +100,7 @@ def post_to_reddit(launches):
 
         eastern = ZoneInfo("America/New_York")
         today_eastern = datetime.now(eastern).strftime("%B %d, %Y")
-        title = f"🚀 Upcoming Rocket Launches for {today_eastern}"
+        title = f"🚀 Upcoming Space Launches for {today_eastern}"
 
         body = build_post_body(launches)
         subreddit = reddit.subreddit(subreddit_name)
