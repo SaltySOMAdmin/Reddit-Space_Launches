@@ -23,8 +23,8 @@ reddit = praw.Reddit(
     user_agent=config.destination_user_agent
 )
 
-#subreddit_name = 'UFOs'
-subreddit_name = 'SaltyDevSub'
+subreddit_name = 'UFOs'
+#subreddit_name = 'SaltyDevSub'
 LAUNCH_API_URL = "https://ll.thespacedevs.com/2.2.0/launch/upcoming/"
 LOOKAHEAD_HOURS = 24
 FLAIR_ID = 'ccb60ec8-2ac5-11f0-841c-8ed4fd6e23df'  # Space Launch
