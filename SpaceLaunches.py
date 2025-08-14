@@ -23,7 +23,8 @@ reddit = praw.Reddit(
     user_agent=config.destination_user_agent
 )
 
-subreddit_name = 'UFOs'
+#subreddit_name = 'UFOs'
+subreddit_name = 'SaltyDevSub'
 LAUNCH_API_URL = "https://ll.thespacedevs.com/2.2.0/launch/upcoming/"
 LOOKAHEAD_HOURS = 24
 FLAIR_ID = 'ccb60ec8-2ac5-11f0-841c-8ed4fd6e23df'  # Space Launch
@@ -68,7 +69,7 @@ def format_launch_time(utc_time_str):
         return utc_time_str  # fallback
 
 def build_post_body(launches):
-    body = "**Here are the launches scheduled for the next 24 hours:**\n\n"
+    body = "**[Here are the launches scheduled for the next 24 hours:](https://www.ufos.wiki/wp-content/uploads/2023/01/mf5emwi.png)**\n\n"
     for launch in launches:
         name = clean_text(launch.get('name', 'Unknown'))
         time = launch.get('net', 'Unknown')
