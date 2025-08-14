@@ -103,7 +103,12 @@ def post_to_reddit(launches):
 
         body = build_post_body(launches)
         subreddit = reddit.subreddit(subreddit_name)
-        submission = subreddit.submit(title, selftext=body)
+        #submission = subreddit.submit(title, selftext=body)
+        submission = subreddit.submit(
+            title=title,
+            url="https://www.ufos.wiki/investigation/space-launches/",
+            selftext=body
+        )
 
         submission.flair.select(FLAIR_ID)
 
