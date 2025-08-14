@@ -68,7 +68,7 @@ def format_launch_time(utc_time_str):
         return utc_time_str  # fallback
 
 def build_post_body(launches):
-    body = "**Here are the launches scheduled for the next 24 hours:**\n\n"
+    body = "**[Here are the launches scheduled for the next 24 hours:](https://www.ufos.wiki/investigation/space-launches/)**\n\n"
     for launch in launches:
         name = clean_text(launch.get('name', 'Unknown'))
         time = launch.get('net', 'Unknown')
@@ -103,12 +103,7 @@ def post_to_reddit(launches):
 
         body = build_post_body(launches)
         subreddit = reddit.subreddit(subreddit_name)
-        #submission = subreddit.submit(title, selftext=body)
-        submission = subreddit.submit(
-            title=title,
-            url="https://www.ufos.wiki/investigation/space-launches/",
-            selftext=body
-        )
+        submission = subreddit.submit(title, selftext=body)
 
         submission.flair.select(FLAIR_ID)
 
